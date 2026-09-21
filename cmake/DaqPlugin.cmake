@@ -7,7 +7,7 @@
 # 效果：
 #   - 自动添加 SDK include 路径
 #   - 自动设置符号隐藏
-#   - 自动链接 Qt6::Core
+#   - 自动链接 Qt6::Core + Qt6::Gui
 #   - 自动编译 DaqIO.cpp
 
 function(daq_plugin_setup target)
@@ -35,9 +35,9 @@ function(daq_plugin_setup target)
         VISIBILITY_INLINES_HIDDEN ON
     )
 
-    # 链接 Qt6::Core
-    find_package(Qt6 REQUIRED COMPONENTS Core)
-    target_link_libraries(${target} PRIVATE Qt6::Core)
+    # 链接 Qt6::Core + Qt6::Gui（QImage/QPainter 绘图需要）
+    find_package(Qt6 REQUIRED COMPONENTS Core Gui)
+    target_link_libraries(${target} PRIVATE Qt6::Core Qt6::Gui)
 
     # 输出文件名：lib + 项目名
     set_target_properties(${target} PROPERTIES
